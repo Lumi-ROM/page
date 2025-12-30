@@ -1,0 +1,55 @@
+/* Guide Specific Styles */
+.tui-info {
+    color: var(--text);
+    font-weight: bold;
+    margin-bottom: 10px;
+    background: rgba(26, 115, 232, 0.2);
+    display: inline-block;
+    padding: 2px 8px;
+}
+
+.tui-list {
+    list-style: none;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.tui-list li {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.tui-step {
+    margin-bottom: 20px;
+    border-left: 2px solid var(--border);
+    padding-left: 15px;
+}
+
+.step-num {
+    color: var(--text);
+    font-weight: bold;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.tui-code-block {
+    background: #000;
+    border: 1px dashed var(--border);
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 0.85rem;
+}
+
+.prompt {
+    color: var(--text);
+    opacity: 0.6;
+    margin-right: 10px;
+}
+
+.tui-warning {
+    color: #ff4444 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    margin-top: 10px;
+}
