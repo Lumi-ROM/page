@@ -3,63 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumiROM Official Website >_</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>LumiROM | Main</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="tui-theme">
+<body>
 
-    <div class="terminal-container">
-        <header class="tui-header">
-            <div class="logo">
-                [ LUMIROM ]
-            </div>
-            <div class="controls">
-                <button id="theme-toggle" class="tui-btn">TOGGLE_MODE</button>
+    <div class="m3-container">
+        <header class="m3-top-app-bar">
+            <h1 class="m3-title">LumiROM</h1>
+            <div class="m3-actions">
+                <button id="theme-toggle" class="m3-icon-btn" aria-label="Toggle theme">
+                    <span id="theme-icon">Dark</span>
+                </button>
             </div>
         </header>
 
-        <section class="tui-box hero">
-            <div class="box-title">SYSTEM_INFO</div>
-            <p>> STATUS: STABLE</p>
-            <p>> DEVICE: SAMSUNG GALAXY A32 4G</p>
-            <p>> CORE: MEDIATEK HELIO G80 (MT6769V)</p>
-            <p class="blink">> INITIALIZING_SYSTEM...</p>
-        </section>
+        <main class="m3-content">
+            <section class="m3-card m3-card-filled hero-section">
+                <span class="m3-badge">Stable</span>
+                <h2 class="m3-headline-medium">LumiROM</h2>
+                <div class="m3-supporting-text">
+                    <p>The ROM ported from A34 with One UI 8 (Android 16) have the best performance.</p>
+                </div>
+            </section>
 
-        <nav class="tui-nav">
-            <a href="#changelogs">[ 01 - CHANGELOGS ]</a>
-            <a href="https://lumi-rom.github.io/resources">[ 02 - DOWNLOADS ]</a>
-        </nav>
+            <nav class="m3-chip-set">
+                <a href="#changelogs" class="m3-filter-chip">Changelogs</a>
+                <a href="https://lumi-rom.github.io/resources" class="m3-filter-chip">Downloads</a>
+            </nav>
 
-        <section id="features" class="tui-box">
-            <div class="box-title">CHANGELOGS</div>
-            <ul class="tui-list">
-                <li>-- v8.0.0 -> v8.2.5 (Alpha builds) --</li>
-                <li>* FOD (Fingerprint On Display)</li>
-                <li>* Galaxy AI</li>
-		<li>* NFC</li>
-		<li>* Basic features (Wi-Fi, Bluetooth, etc.)</li>
-		<li>* It boots</li>
-		<li>-- Fixes: Lag on security settings, system sound, SSRM warning --</li>
+            <section id="changelogs" class="m3-card m3-card-outlined">
+                <h3 class="m3-headline-small">Latest Changelogs</h3>
+                
+                <div class="changelog-item">
+                    <h4 class="m3-label-large">v8.3.1 (Latest)</h4>
+                    <ul class="m3-list">
+                       <li>Product, system_ext, odm and vendor partitions has been converted to EroFS </li>
+			<li>New EroFS kernel for A32 and A22 </li>
+			<li>December Patch </li>
+			<li>Removed FRP </li>
+			<li>Added AI Weather on Lock screen</li>
+			<li>Added AI Wallpaper</li>
+			<li>Added new settings</li>
+			<li>Fixes: clock selection on lockscreen, recent calls on phone app, Studio app </li>
+                    </ul>
+                </div>
 
-		<li> ------- </li>
+                <div class="changelog-item">
+                    <h4 class="m3-label-large">v8.2.5 (Alpha)</h4>
+                    <ul class="m3-list">
+                        <li>FOD (Fingerprint On Display)</li>
+                	<li>Galaxy AI</li>
+			<li>NFC</li>
+			<li>Basic features (Wi-Fi, Bluetooth, etc.)</li>
+			<li>It boots</li>
+			<li>Fixes: Lag on security settings, system sound, SSRM warning</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
 
-		<li> -- v8.3.0 -> v8.3.1 -- </li>
-		<li>* Product, system_ext, odm and vendor partitions has been converted to EroFS </li>
-		<li>* New EroFS kernel for A32 and A22 </li>
-		<li>* December Patch </li>
-		<li>* Removed FRP </li>
-		<li>* Added AI Weather on Lock screen</li>
-		<li>* Added AI Wallpaper</li>
-		<li>* Added new settings</li>
-		<li> -- Fixes: clock selection on lockscreen, recent calls on phone app, Studio app --</li>
-            </ul>
-        </section>
-
-
-        <footer class="tui-footer">
-            [ END OF LINE ]
+        <footer class="m3-footer">
+            <p>LumiROM &copy; 2024 • End of Line</p>
         </footer>
     </div>
 

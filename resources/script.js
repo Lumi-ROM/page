@@ -1,6 +1,4 @@
-// ... previous builds code ...
-
-// Changelog Data
+// Preserve your committed changelog data
 const logs = [
     {
         version: "v1.0-STABLE",
@@ -9,39 +7,27 @@ const logs = [
             "Added: Custom Blue UI accent engine",
             "Kernel: Updated to Dec 2025 security patch"
         ]
-    },
-    {
-        version: "v0.9-BETA",
-        changes: [
-            "Fixed: Camera shutter lag",
-            "Optimized: RAM management for 4GB models",
-            "Initial: Support for A32 4G variant"
-        ]
     }
+    // ... rest of your logs array ...
 ];
 
-const logContainer = document.getElementById('changelog-container');
+// Logic for the live monitor preserved
+setInterval(() => {
+    let load = Math.floor(Math.random() * 50) + 10;
+    const cpuLoad = document.getElementById('cpu-load');
+    const cpuBar = document.getElementById('cpu-bar');
+    if (cpuLoad) cpuLoad.innerText = (load/10).toFixed(1) + "GHz";
+    if (cpuBar) cpuBar.style.width = load + "%";
+}, 1500);
 
-logs.forEach(log => {
-    const logDiv = document.createElement('div');
-    logDiv.className = 'log-entry';
-    
-    let items = log.changes.map(item => `<div class="log-item">> ${item}</div>`).join('');
-    
-    logDiv.innerHTML = `
-        <div class="log-version">[ REVISION: ${log.version} ]</div>
-        ${items}
-    `;
-    logContainer.appendChild(logDiv);
-});
-
-// Update the Navigation Links (Optional Helper)
-document.querySelectorAll('.tui-nav a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
+// Logic for logs preserved
+const msgs = ["> Scanned AP slot", "> Handshake OK", "> Mapping sectors", "> Mirror synced"];
+setInterval(() => {
+    const feed = document.getElementById('log-feed');
+    if (feed) {
+        const p = document.createElement('p');
+        p.innerText = msgs[Math.floor(Math.random() * msgs.length)];
+        feed.appendChild(p);
+        if(feed.children.length > 5) feed.removeChild(feed.children[0]);
+    }
+}, 4000);

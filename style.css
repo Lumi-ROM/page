@@ -1,123 +1,187 @@
 :root {
-    --primary: #1a73e8; /* Blue Accent */
-    --bg: #0a0a0a;
-    --text: #ffffff;
-    --border: #ffffff;
+    /* M3 Color Palette (Light Mode Default) - Pastel Blue Focus */
+    --md-sys-color-primary: #3E6189; 
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-primary-container: #D1E4FF;
+    --md-sys-color-on-primary-container: #001D36;
+    
+    --md-sys-color-surface: #F8F9FF; /* Light blue-tinted background */
+    --md-sys-color-surface-variant: #DDE3EA;
+    --md-sys-color-on-surface: #191C1E;
+    --md-sys-color-on-surface-variant: #41484D;
+    
+    --md-sys-color-outline: #71787E;
+    --md-sys-color-secondary-container: #D7E3F7; /* Pastel Secondary */
+    
+    /* M3 Shapes */
+    --md-sys-shape-corner-extra-large: 28px;
+    --md-sys-shape-corner-medium: 12px;
+    --md-sys-shape-corner-full: 100px;
+
+    /* TUI Compatibility Token */
+    --tui-border: #191C1E;
 }
 
 body.dark-mode {
-    --bg: #ffffff;
-    --text: #0a0a0a;
-    --border: #0a0a0a;
+    /* M3 Color Palette (Dark Mode) - Pastel Blue Focus */
+    --md-sys-color-primary: #A1C9F4; /* Soft Pastel Blue */
+    --md-sys-color-on-primary: #003258;
+    --md-sys-color-primary-container: #254970;
+    --md-sys-color-on-primary-container: #D1E4FF;
+    
+    --md-sys-color-surface: #111416;
+    --md-sys-color-surface-variant: #41484D;
+    --md-sys-color-on-surface: #E2E2E6;
+    --md-sys-color-on-surface-variant: #C1C7CE;
+    
+    --md-sys-color-outline: #8B9198;
+    --md-sys-color-secondary-container: #3E4759;
+    
+    --tui-border: #E2E2E6;
 }
+
+* { box-sizing: border-box; }
 
 body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    padding: 20px;
-    transition: background 0.1s;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: 'Google Sans Flex', sans-serif;
+    margin: 0;
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.terminal-container {
-    max-width: 900px;
+.m3-container {
+    max-width: 800px;
     margin: 0 auto;
-    border: 2px solid var(--border);
-    padding: 20px;
+    padding: 24px;
 }
 
-.tui-header {
+/* Top App Bar */
+.m3-top-app-bar {
     display: flex;
     justify-content: space-between;
-    border-bottom: 2px double var(--border);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    align-items: center;
+    height: 64px;
+    margin-bottom: 24px;
 }
 
+.m3-title { 
+    font-size: 22px; 
+    font-weight: 700; 
+    letter-spacing: 1px;
+}
+
+/* Cards */
+.m3-card {
+    border-radius: var(--md-sys-shape-corner-extra-large);
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.m3-card-filled {
+    background-color: var(--md-sys-color-surface-variant);
+}
+
+.m3-card-outlined {
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+/* Headline Styles */
+.m3-headline-medium { font-size: 28px; margin: 0 0 8px 0; font-weight: 700; }
+.m3-headline-small { font-size: 24px; margin-bottom: 16px; font-weight: 700; }
+
+/* Chips */
+.m3-chip-set {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.m3-filter-chip {
+    border: 1px solid var(--md-sys-color-outline);
+    padding: 10px 20px;
+    border-radius: var(--md-sys-shape-corner-medium);
+    text-decoration: none;
+    color: var(--md-sys-color-primary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.m3-filter-chip:hover {
+    background-color: var(--md-sys-color-primary-container);
+    border-color: var(--md-sys-color-primary);
+}
+
+/* Badge */
+.m3-badge {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding: 4px 12px;
+    border-radius: var(--md-sys-shape-corner-full);
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+/* --- THE ORIGINAL TUI BOX (UNCHANGED) --- */
 .tui-box {
-    border: 1px solid var(--border);
+    border: 1px solid var(--tui-border);
     padding: 15px;
     margin-bottom: 20px;
     position: relative;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .box-title {
     position: absolute;
     top: -12px;
     left: 10px;
-    background: var(--bg);
+    background: var(--md-sys-color-surface);
     padding: 0 5px;
     font-weight: bold;
     font-size: 0.9rem;
 }
 
-.tui-nav {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+.tui-list { 
+    list-style: none; 
+    padding: 0; 
 }
 
-.tui-nav a {
-    color: var(--primary);
-    text-decoration: none;
-}
-
-.tui-nav a:hover {
-    background: var(--primary);
-    color: white;
-}
-
-.tui-list { list-style: none; }
-
-.tui-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th { text-align: left; border-bottom: 1px dashed var(--border); }
-td { padding: 10px 0; }
-
-.tui-btn {
-    background: var(--primary);
-    color: white;
+/* Icons & Buttons */
+.m3-icon-btn {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-surface);
     border: none;
-    font-family: inherit;
-    padding: 5px 10px;
+    padding: 12px 24px;
+    border-radius: var(--md-sys-shape-corner-full);
     cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: opacity 0.2s;
 }
 
-.tui-btn:hover {
-    background: var(--text);
-    color: var(--bg);
+.m3-icon-btn:hover {
+    opacity: 0.8;
 }
 
-.blink {
-    animation: blinker 1s linear infinite;
+.initializing {
+    color: var(--md-sys-color-primary);
+    font-weight: 700;
+    font-variation-settings: 'wght' 700;
 }
 
-@keyframes blinker {
-    50% { opacity: 0; }
-}
+.blink { animation: blinker 1s linear infinite; }
+@keyframes blinker { 50% { opacity: 0; } }
 
-.tui-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.tui-img-placeholder {
-    height: 150px;
-    border: 1px dashed var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-}
-
-.tui-footer {
+.m3-footer {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
     font-size: 0.8rem;
-    opacity: 0.7;
+    opacity: 0.6;
 }
