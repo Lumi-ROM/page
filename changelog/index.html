@@ -40,6 +40,7 @@
             font-size: 3rem; 
             margin: 0; 
             background: linear-gradient(to right, #fff, var(--accent));
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -100,6 +101,7 @@
         }
 
         .badge-latest { background: var(--accent); color: white; }
+        .badge-beta { background: #30968c; color: white; }
         .badge-alpha { background: #333; color: #a0a0a0; border: 1px solid #444; }
 
         .change-card {
@@ -131,6 +133,7 @@
         }
 
         .tag-sys { color: #bb86fc; background: rgba(187, 134, 252, 0.1); }
+        .tag-rom { color: #109e90; background: rgba(17, 100, 92, 0.2); }
         .tag-fix { color: #cf6679; background: rgba(207, 102, 121, 0.1); }
         .tag-ai { color: #03dac6; background: rgba(3, 218, 198, 0.1); }
 
@@ -149,11 +152,34 @@
     <div class="container">
         <div class="header-section">
             <h1>System Updates</h1>
-            <p style="color: var(--text-muted)">Tracking the changes of LumiROM for A32 4G</p>
+            <p style="color: var(--text-muted)">Tracking the changes of LumiROM</p>
         </div>
 
         <div class="timeline">
             <div class="timeline-line"></div>
+
+            <div class="version-node">
+                <div class="v-header">
+                    <span class="v-number">v8.5.0</span>
+                    <span class="v-badge badge-beta">Beta Build</span>
+                </div>
+                <div class="change-card">
+                    <div class="erofs-info">
+                        <strong>EroFS Update:</strong> system is also converted to erofs (at least for beta)
+                    </div>
+                    <ul>
+                        <li><span class="tag tag-rom">ROM</span> Samsung A15 4G Port</li>
+                        <li><span class="tag tag-sys">New</span> Added new kernel to boot One Ui 8.5</li>
+                        <li><span class="tag tag-fix">Fix</span> Fixed WiFi</li>
+                        <li><span class="tag tag-fix">Fix</span> Fixed RIL</li>
+                        <li><span class="tag tag-fix">Fix</span> Fixed SSRM (partially)</li>
+                        <li><span class="tag tag-fix">Fix</span> Fixed (partially) camera</li>
+                        <li><span class="tag tag-fix">Fix</span> Fixed bluetooth</li>
+                        <li><span class="tag tag-fix">Fix</span> Fixed NFC</li>
+
+                    </ul>
+                </div>
+            </div>
 
             <div class="version-node">
                 <div class="v-header">
@@ -167,7 +193,7 @@
                     </div>
                     <ul>
                         <li><span class="tag tag-sys">Patch</span> December Security Patch</li>
-                        <li><span class="tag tag-sys">System</span> Removed FRP (Factory Reset Protection)</li>
+                        <li><span class="tag tag-sys">System</span> Removed "FRP" (Factory Reset Protection)</li>
                         <li><span class="tag tag-ai">AI</span> Added AI Weather on Lock screen</li>
                         <li><span class="tag tag-ai">AI</span> Added AI Wallpaper</li>
                         <li><span class="tag tag-sys">UI</span> Added new specialized settings</li>
