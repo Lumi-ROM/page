@@ -190,7 +190,6 @@
   .screenshots-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 1px; background: var(--border); border: 1px solid var(--border);
-    opacity: 0;
   }
   @media (max-width: 600px) { .screenshots-grid { grid-template-columns: 1fr; } }
 
@@ -470,8 +469,11 @@ const observer = new IntersectionObserver((entries) => {
     if (el.classList.contains('spec-item'))
       anime({ targets: el, opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutExpo' });
 
-    if (el.id === 'screenshots-grid')
-      anime({ targets: el.querySelectorAll('.screenshot-frame'), opacity:[0,1], translateY:[24,0], duration:600, delay:anime.stagger(80), easing:'easeOutExpo' });
+    if (el.id === 'screenshots-grid') {
+      el.querySelectorAll('.screenshot-frame').forEach((frame, i) => {
+        anime({ targets: frame, opacity:[0,1], translateY:[24,0], duration:600, delay: i*100, easing:'easeOutExpo' });
+      });
+    }
 
     if (el.id === 'download-block')
       anime({ targets: el, opacity:[0,1], translateX:[-16,0], duration:500, easing:'easeOutExpo' });
@@ -485,6 +487,9 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.feature-card, .spec-item, #screenshots-grid, #download-block, #warn-block')
   .forEach(el => observer.observe(el));
+
+// set initial state for screenshot frames
+document.querySelectorAll('.screenshot-frame').forEach(f => f.style.opacity = '0');
 </script>
 </body>
 </html>
