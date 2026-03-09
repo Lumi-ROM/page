@@ -1,450 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumiROM</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lumirom — one ui 8 for galaxy a-series</title>
+<meta name="description" content="lumirom — experience the fluidity and smoothness of one ui 8 on samsung galaxy a32/a22.">
+<meta name="author" content="luminous418">
+<meta name="theme-color" content="#89b4fa">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        :root {
-            --bg-dark: #0a0b10;
-            --bg-card: #161822;
-            --accent: #7c4dff; /* Deep Purple */
-            --accent-light: #b47cff;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --success: #00e676;
-            --font-main: 'Inter', sans-serif;
-            --font-display: 'Orbitron', sans-serif;
-        }
+  :root {
+    --blue:      #89b4fa;
+    --blue-dim:  #4a7fcb;
+    --blue-glow: rgba(137,180,250,0.12);
+    --bg:        #0d0d0f;
+    --bg3:       #16161a;
+    --border:    rgba(137,180,250,0.1);
+    --text:      #cdd6f4;
+    --muted:     #45475a;
+    --subtle:    #6c7086;
+    --green:     #a6e3a1;
+    --font:      'JetBrains Mono', monospace;
+  }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  html { scroll-behavior: smooth; }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-        /* --- Navbar --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 11, 16, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+  /* cursor */
+  #cursor {
+    position: fixed; width: 6px; height: 6px;
+    background: var(--blue); border-radius: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width 0.15s, height 0.15s;
+  }
+  #cursor-ring {
+    position: fixed; width: 28px; height: 28px;
+    border: 1px solid rgba(137,180,250,0.4); border-radius: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+  }
 
-        .logo {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--text-main);
-            letter-spacing: 2px;
-        }
+  /* noise */
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+  /* grid */
+  body::after {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(137,180,250,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(137,180,250,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
 
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 30px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
 
-        .nav-links a:hover {
-            color: var(--accent-light);
-        }
+  /* ── nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,13,15,0.85); backdrop-filter: blur(16px);
+  }
+  nav .container { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+  .nav-logo { font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: 0.05em; text-decoration: none; opacity: 0; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--subtle); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--blue); }
 
-        /* --- Hero Section --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            padding: 0 20px;
-        }
+  /* ── hero ── */
+  #hero { padding: 160px 0 100px; min-height: 100vh; display: flex; align-items: center; }
+  .hero-inner { width: 100%; }
 
-        /* Background Gradient Blob */
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(124, 77, 255, 0.2) 0%, rgba(10, 11, 16, 0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-        }
+  .hero-tag {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 20px; opacity: 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--blue); }
 
-        .hero h1 {
-            font-family: var(--font-display);
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            overflow: hidden; /* For animation reveal */
-        }
-        
-        .hero h1 .letter {
-            display: inline-block;
-            line-height: 1em;
-        }
+  h1 {
+    font-size: clamp(48px, 8vw, 80px); font-weight: 800;
+    line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px; opacity: 0;
+  }
+  .hero-accent { color: var(--blue); }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 40px;
-            opacity: 0; /* Hidden initially */
-        }
+  .hero-desc {
+    font-size: 13px; color: var(--subtle); max-width: 460px;
+    line-height: 1.8; margin-bottom: 40px; opacity: 0;
+  }
 
-        .btn-group {
-            display: flex;
-            gap: 20px;
-            opacity: 0; /* Hidden initially */
-        }
+  .hero-actions { display: flex; gap: 14px; align-items: center; opacity: 0; flex-wrap: wrap; }
 
-        .btn {
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+    background: var(--blue); color: #0d0d0f; text-decoration: none;
+    font-family: var(--font); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: #a8c8ff; transform: translateY(-1px); }
 
-        .btn-primary {
-            background: linear-gradient(45deg, var(--accent), var(--accent-light));
-            color: white;
-            box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3);
-        }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+    background: transparent; color: var(--subtle); text-decoration: none;
+    font-family: var(--font); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; border: 1px solid var(--border); cursor: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--blue); border-color: var(--blue); }
 
-        .btn-secondary {
-            border: 2px solid var(--accent);
-            color: white;
-        }
+  /* device badge */
+  .device-badge {
+    margin-top: 40px; opacity: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); max-width: 620px;
+  }
+  .badge-item {
+    background: var(--bg); padding: 16px 20px;
+    transition: background 0.2s;
+  }
+  .badge-item:hover { background: var(--bg3); }
+  .badge-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .badge-val { font-size: 11px; color: var(--text); font-weight: 600; line-height: 1.6; }
+  .badge-val .hi { color: var(--blue); }
 
-        .btn:hover {
-            transform: translateY(-3px);
-        }
+  /* ── sections ── */
+  section { padding: 80px 0; border-top: 1px solid var(--border); }
 
-        /* --- Device Info Badge --- */
-        .device-badge {
-            margin-top: 50px;
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            opacity: 0;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .separator { height: 20px; width: 1px; background: #444; }
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; }
+  .section-num { font-size: 10px; color: var(--blue); letter-spacing: 0.15em; opacity: 0.6; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
 
-        /* --- Features Section --- */
-        .section {
-            padding: 100px 10%;
-        }
+  /* ── features ── */
+  .features-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+  }
+  @media (max-width: 600px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .device-badge { grid-template-columns: 1fr; }
+    .specs-row { flex-direction: column; gap: 1px; }
+  }
 
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            margin-bottom: 50px;
-            text-align: center;
-        }
+  .feature-card {
+    background: var(--bg); padding: 24px;
+    opacity: 0; transition: background 0.2s;
+  }
+  .feature-card:hover { background: var(--bg3); }
+  .feature-card:hover .fc-name { color: var(--blue); }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+  .fc-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .fc-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 8px; transition: color 0.2s; }
+  .fc-desc { font-size: 10px; color: var(--subtle); line-height: 1.7; }
 
-        .feature-card {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s;
-            opacity: 0; /* For scroll animation */
-            transform: translateY(30px);
-        }
+  /* ── specs ── */
+  .specs-row {
+    display: flex; gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .spec-item {
+    flex: 1; background: var(--bg); padding: 24px 20px;
+    text-align: center; opacity: 0; transition: background 0.2s;
+  }
+  .spec-item:hover { background: var(--bg3); }
+  .spec-val { font-size: 28px; font-weight: 800; color: var(--blue); letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; }
+  .spec-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
-        .feature-card:hover {
-            border-color: var(--accent);
-        }
+  /* ── screenshots ── */
+  .screenshots-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border); border: 1px solid var(--border);
+    opacity: 0;
+  }
+  @media (max-width: 600px) { .screenshots-grid { grid-template-columns: 1fr; } }
 
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: var(--accent-light);
-        }
+  .screenshot-frame {
+    position: relative; overflow: hidden; line-height: 0;
+    transition: background 0.2s;
+  }
+  .screenshot-frame img { width: 100%; height: auto; display: block; filter: saturate(0.88) brightness(0.92); transition: filter 0.4s, transform 0.5s; }
+  .screenshot-frame:hover img { filter: saturate(1.0) brightness(1.0); transform: scale(1.03); }
+  .screenshot-scanlines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+    pointer-events: none; z-index: 1; opacity: 0.5;
+  }
 
-        .feature-card h3 {
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
+  /* ── download section ── */
+  .download-block {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-left: 2px solid var(--blue);
+    padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; opacity: 0;
+  }
+  .download-block-left { display: flex; flex-direction: column; gap: 4px; }
+  .download-block-title { font-size: 12px; font-weight: 700; color: var(--text); }
+  .download-block-sub { font-size: 10px; color: var(--subtle); }
+  .download-block-sub strong { color: var(--text); }
 
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+  /* ── warning ── */
+  .warn-block {
+    margin-top: 16px; background: var(--bg3);
+    border: 1px solid var(--border); border-left: 2px solid #f38ba8;
+    padding: 12px 18px; opacity: 0;
+  }
+  .warn-block p { font-size: 10px; color: var(--subtle); line-height: 1.7; }
+  .warn-block strong { color: #f38ba8; }
 
-        /* --- Stats/Specs --- */
-        .specs-container {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
+  /* ── footer ── */
+  footer { border-top: 1px solid var(--border); padding: 32px 0; }
+  footer .container { display: flex; align-items: center; justify-content: space-between; }
+  .footer-left { font-size: 11px; color: var(--muted); }
+  .footer-left span { color: var(--blue); }
+  .footer-right { font-size: 10px; color: var(--muted); }
 
-        .spec-item {
-            text-align: center;
-        }
-
-        .spec-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--text-main);
-            font-family: var(--font-display);
-        }
-
-        .spec-label {
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-        }
-
-        /* --- Footer --- */
-        footer {
-            text-align: center;
-            padding: 50px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-muted);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .device-badge { flex-direction: column; gap: 5px; }
-            .separator { display: none; }
-        }
-    </style>
+  /* misc */
+  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--blue-dim); }
+  .glow-dot { display: inline-block; width: 6px; height: 6px; background: var(--blue); border-radius: 0; margin-right: 6px; animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)} }
+  .tag { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); background: var(--blue-glow); border: 1px solid rgba(137,180,250,0.15); padding: 2px 7px; }
+</style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">LUMI</div>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-	    	<a href="https://LumiROMGroup.t.me/">Download</a>
-            <a href="https://Luminous418.t.me/">Contact me</a>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- nav -->
+<nav id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo" id="nav-logo">lumi<span style="color:var(--subtle)">.</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#features">features</a></li>
+      <li><a href="#screenshots">screenshots</a></li>
+      <li><a href="#download">download</a></li>
+      <li><a href="https://LumiROMGroup.t.me/" target="_blank">telegram ↗</a></li>
+      <li><a href="https://Luminous418.t.me/" target="_blank">contact ↗</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- hero -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-tag" id="hero-tag">custom rom / samsung galaxy a-series</div>
+      <h1 id="hero-title">
+        <span class="hero-accent">lumirom</span><br>
+        <span style="color:var(--subtle);font-size:0.5em;font-weight:300;letter-spacing:0.01em">one ui 8.5 · android 16 · beta v8.5.5</span>
+      </h1>
+      <p class="hero-desc" id="hero-desc">
+        experience the fluidity and smoothness of one ui 8 on your galaxy a-series device.
+        debloated, optimized, with full galaxy ai support.
+      </p>
+      <div class="hero-actions" id="hero-actions">
+        <a href="https://LumiROMGroup.t.me/" target="_blank" class="btn-primary">↓ download rom</a>
+        <a href="https://lumirom.vercel.app/changelog" target="_blank" class="btn-ghost">changelog</a>
+      </div>
+
+      <div class="device-badge" id="device-badge">
+        <div class="badge-item">
+          <div class="badge-label">supported devices</div>
+          <div class="badge-val">
+            galaxy <span class="hi">a32</span> 4g<br>
+            galaxy <span class="hi">a22</span> 4g<br>
+            galaxy <span class="hi">a22</span> 5g
+          </div>
         </div>
-    </nav>
-
-    <header class="hero">
-        <h1 class="ml16">LUMIROM</h1>
-        <p class="hero-sub">Experience the fluidity and smoothness of One UI 8.</p>
-        
-        <div class="btn-group">
-            <a href="https://LumiROMGroup.t.me/" class="btn btn-primary">Download ROM</a>
-            <a href="https://lumirom.vercel.app/changelog" class="btn btn-secondary">Changelog</a>
+        <div class="badge-item">
+          <div class="badge-label">base</div>
+          <div class="badge-val">
+            one ui <span class="hi">8.5</span><br>
+            beta build
+          </div>
         </div>
-
-        <div class="device-badge">
-            <span>Devices: <br> <strong>Samsung Galaxy A32 4G <br> Samsung Galaxy A22 4G <br> Samsung Galaxy A22 5G</strong></span>
-            <div class="separator"></div>
-            <span>Base: <br><strong>One UI 8.5 <br>Beta Build</strong></span>
-            <div class="separator"></div>
-            <span>Android: <br><strong>16</strong></span>
+        <div class="badge-item">
+          <div class="badge-label">android</div>
+          <div class="badge-val">
+            android <span class="hi">16</span><br>
+            helio g80
+          </div>
         </div>
-    </header>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section id="features" class="section">
-        <h2 class="section-title">Beyond Stock Limits</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🚀</div>
-                <h3>Performance Unlocked</h3>
-                <p>Heavily debloated system. Removed bloatware to free up RAM on the Helio G80 chipset.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3>One UI 8 Visuals</h3>
-                <p>Enjoy the new "Now Bar", redesigned Quick Panel, and Android 16 predictive back animations.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Flagship Animations</h3>
-                <p>Enjoy full flagship animations, with a lot of improvements</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">✨</div>
-                <h3>Galaxy AI</h3>
-                <p>Also full Galaxy AI suite with working gallery AI support</p>
-            </div>
+<!-- features -->
+<section id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">features</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="fc-label">performance</div>
+        <div class="fc-name">performance unlocked</div>
+        <div class="fc-desc">heavily debloated system. removed bloatware to free up ram on the helio g80 chipset. significant speed improvements over stock.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">visuals</div>
+        <div class="fc-name">one ui 8 visuals</div>
+        <div class="fc-desc">enjoy the new "now bar", redesigned quick panel, and android 16 predictive back animations. full one ui 8.5 experience.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">animations</div>
+        <div class="fc-name">flagship animations</div>
+        <div class="fc-desc">full flagship animation set ported from higher-end samsung devices, with a lot of improvements and refinements.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">ai</div>
+        <div class="fc-name">galaxy ai</div>
+        <div class="fc-desc">full galaxy ai suite with working gallery ai support. features previously exclusive to flagship devices, now on your a-series.</div>
+      </div>
+    </div>
+
+    <!-- specs -->
+    <div style="margin-top:1px">
+      <div class="specs-row" id="specs-row">
+        <div class="spec-item">
+          <div class="spec-val">~3.4<span style="font-size:16px;font-weight:400">gb</span></div>
+          <div class="spec-lbl">rom size</div>
         </div>
-
-        <div class="specs-container">
-            <div class="spec-item">
-                <div class="spec-value">~3.4GB</div>
-                <div class="spec-label">ROM Size</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">v3.5.0</div>
-                <div class="spec-label">Beta Build</div>
-            </div>
+        <div class="spec-item">
+          <div class="spec-val">v8.5.5</div>
+          <div class="spec-lbl">beta build</div>
         </div>
-    </section>
-
-    <section id="download" class="section" style="background: rgba(255,255,255,0.02);">
-        <h2 class="section-title">Ready to Flash?</h2>
-        <div style="text-align: center;">
-            <p style="color: var(--text-muted); margin-bottom: 30px;">Requires Unlocked Bootloader & TWRP</p>
-            <a href="#" class="btn btn-primary">Get LumiROM</a>
+        <div class="spec-item">
+          <div class="spec-val">16</div>
+          <div class="spec-lbl">android version</div>
         </div>
-    </section>
+        <div class="spec-item">
+          <div class="spec-val">8.5</div>
+          <div class="spec-lbl">one ui version</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <footer>
-        <p>&copy; 2026 LumiROM Developer Team.</p>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Flash at your own risk.</p>
-    </footer>
+<!-- screenshots -->
+<section id="screenshots">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">screenshots</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="screenshots-grid" id="screenshots-grid">
+      <div class="screenshot-frame">
+        <img src="https://git.meowlabs.online/ncatt/mystuff/media/branch/main/lumirom_ss/photo_2026-03-09_20-40-31.jpg" alt="lumirom screenshot 1" onerror="this.src='https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-31.jpg'"/>
+        <div class="screenshot-scanlines"></div>
+      </div>
+      <div class="screenshot-frame">
+        <img src="https://git.meowlabs.online/ncatt/mystuff/media/branch/main/lumirom_ss/photo_2026-03-09_20-40-32.jpg" alt="lumirom screenshot 2" onerror="this.src='https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-32.jpg'"/>
+        <div class="screenshot-scanlines"></div>
+      </div>
+      <div class="screenshot-frame">
+        <img src="https://git.meowlabs.online/ncatt/mystuff/media/branch/main/lumirom_ss/photo_2026-03-09_20-40-34.jpg" alt="lumirom screenshot 3" onerror="this.src='https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-34.jpg'"/>
+        <div class="screenshot-scanlines"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // 1. Prepare Text for Animation (Wrap letters in spans)
-            const textWrapper = document.querySelector('.ml16');
-            textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+<!-- download -->
+<section id="download">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">download</span>
+      <div class="section-line"></div>
+    </div>
 
-            // 2. Hero Sequence Animation using Anime.js timeline
-            const tl = anime.timeline({
-                easing: 'easeOutExpo',
-                duration: 1000
-            });
+    <div class="download-block" id="download-block">
+      <div class="download-block-left">
+        <div class="download-block-title">lumirom beta v8.5.5 — one ui 8.5</div>
+        <div class="download-block-sub">
+          requires <strong>unlocked bootloader</strong> + <strong>twrp</strong> installed.
+          join the telegram group for flashing guides.
+        </div>
+      </div>
+      <a href="https://LumiROMGroup.t.me/" target="_blank" class="btn-primary">get lumirom ↗</a>
+    </div>
 
-            tl
-            // Animate Letters falling in
-            .add({
-                targets: '.ml16 .letter',
-                translateY: [-100, 0],
-                opacity: [0, 1],
-                delay: anime.stagger(100) // 100ms delay between each letter
-            })
-            // Fade in Subtitle
-            .add({
-                targets: '.hero-sub',
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 800
-            }, '-=500')
-            // Scale up Buttons
-            .add({
-                targets: '.btn-group',
-                opacity: [0, 1],
-                scale: [0.8, 1],
-                duration: 800
-            }, '-=600')
-            // Slide up Device Badge
-            .add({
-                targets: '.device-badge',
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 800
-            }, '-=600');
+    <div class="warn-block" id="warn-block">
+      <p><strong>flash at your own risk.</strong> always back up your data before flashing. the developer team is not responsible for any damage caused to your device.</p>
+    </div>
+  </div>
+</section>
 
+<!-- footer -->
+<footer>
+  <div class="container">
+    <div class="footer-left">
+      <span class="glow-dot"></span>
+      <span>lumirom</span> by <span>luminous418</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://LumiROMGroup.t.me/" target="_blank" style="color:var(--subtle);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--subtle)'">
+        t.me/LumiROMGroup ↗
+      </a>
+    </div>
+  </div>
+</footer>
 
-            // 3. Scroll Trigger Animation (Intersection Observer)
-            const observerOptions = {
-                threshold: 0.2 // Trigger when 20% of item is visible
-            };
+<script>
+// cursor
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+function animateRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; cursorRing.style.left=rx+'px'; cursorRing.style.top=ry+'px'; requestAnimationFrame(animateRing); }
+animateRing();
+document.querySelectorAll('a, .feature-card, .badge-item, .spec-item, .screenshot-frame').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='12px'; cursor.style.height='12px'; cursorRing.style.width='44px'; cursorRing.style.height='44px'; cursorRing.style.borderColor='rgba(137,180,250,0.7)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='6px'; cursor.style.height='6px'; cursorRing.style.width='28px'; cursorRing.style.height='28px'; cursorRing.style.borderColor='rgba(137,180,250,0.4)'; });
+});
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Trigger anime.js animation
-                        anime({
-                            targets: entry.target,
-                            translateY: [30, 0],
-                            opacity: [0, 1],
-                            easing: 'spring(1, 80, 10, 0)',
-                            duration: 1000,
-                            delay: entry.target.dataset.delay || 0 // Use data attribute if needed
-                        });
-                        // Stop observing once animated
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
+// nav
+anime({ targets: '#nav-logo', opacity:[0,1], translateY:[-8,0], duration:600, delay:200, easing:'easeOutExpo' });
+anime({ targets: '#nav-links li', opacity:[0,1], translateY:[-6,0], duration:500, delay:anime.stagger(60,{start:300}), easing:'easeOutExpo' });
 
-            // Target the feature cards
-            const featureCards = document.querySelectorAll('.feature-card');
-            
-            // Add a staggered delay via data-attributes manually for the grid logic
-            featureCards.forEach((card, index) => {
-                // We use setTimeout inside the observer logic usually, 
-                // but here we just animate them individually as they appear 
-                // or add a slight delay based on index if they are all in view.
-                
-                // Let's actually use anime's stagger inside the observer if we were observing the container,
-                // but observing individual cards is safer for responsiveness.
-                observer.observe(card);
-            });
-            
-            // Also animate the specs
-            const specItems = document.querySelectorAll('.spec-item');
-            anime({
-                targets: specItems,
-                scale: [0, 1],
-                opacity: [0, 1],
-                delay: anime.stagger(200),
-                autoplay: false, // We will play this manually via observer
-            });
-            
-            // Observe the spec container to trigger the stagger
-            const specContainer = document.querySelector('.specs-container');
-            const specObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if(entry.isIntersecting) {
-                        anime({
-                            targets: '.spec-item',
-                            scale: [0.5, 1],
-                            opacity: [0, 1],
-                            delay: anime.stagger(150),
-                            easing: 'easeOutElastic(1, .8)'
-                        });
-                        specObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            specObserver.observe(specContainer);
-        });
-    </script>
+// hero
+anime({ targets: '#hero-tag',     opacity:[0,1], translateX:[-16,0], duration:700, delay:400,  easing:'easeOutExpo' });
+anime({ targets: '#hero-title',   opacity:[0,1], translateY:[30,0],  duration:900, delay:500,  easing:'easeOutExpo' });
+anime({ targets: '#hero-desc',    opacity:[0,1], translateY:[16,0],  duration:700, delay:700,  easing:'easeOutExpo' });
+anime({ targets: '#hero-actions', opacity:[0,1], translateY:[12,0],  duration:700, delay:850,  easing:'easeOutExpo' });
+anime({ targets: '#device-badge', opacity:[0,1], translateY:[20,0],  duration:800, delay:1050, easing:'easeOutExpo' });
+
+// glitch logo
+const logo = document.getElementById('nav-logo');
+logo.addEventListener('mouseenter', () => {
+  anime({ targets: logo, translateX:[{value:-2,duration:50},{value:2,duration:50},{value:-1,duration:50},{value:0,duration:50}], easing:'linear' });
+});
+
+// scroll reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+
+    if (el.classList.contains('feature-card'))
+      anime({ targets: el, opacity:[0,1], translateY:[20,0], duration:500, easing:'easeOutExpo' });
+
+    if (el.classList.contains('spec-item'))
+      anime({ targets: el, opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutExpo' });
+
+    if (el.id === 'screenshots-grid')
+      anime({ targets: el.querySelectorAll('.screenshot-frame'), opacity:[0,1], translateY:[24,0], duration:600, delay:anime.stagger(80), easing:'easeOutExpo' });
+
+    if (el.id === 'download-block')
+      anime({ targets: el, opacity:[0,1], translateX:[-16,0], duration:500, easing:'easeOutExpo' });
+
+    if (el.id === 'warn-block')
+      anime({ targets: el, opacity:[0,1], translateY:[8,0], duration:400, easing:'easeOutExpo' });
+
+    observer.unobserve(el);
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-card, .spec-item, #screenshots-grid, #download-block, #warn-block')
+  .forEach(el => observer.observe(el));
+</script>
 </body>
-
 </html>
-
