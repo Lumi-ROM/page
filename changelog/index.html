@@ -1,260 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LumiROM | Changelog</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>lumirom — changelog</title>
+<meta name="description" content="lumirom changelog — tracking the changes of lumirom.">
+<meta name="theme-color" content="#89b4fa">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        :root {
-            --bg-dark: #0a0b10;
-            --bg-card: #161822;
-            --accent: #7c4dff;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --font-body: 'Inter', sans-serif;
-            --font-header: 'Orbitron', sans-serif;
-        }
+  :root {
+    --blue:      #89b4fa;
+    --blue-glow: rgba(137,180,250,0.12);
+    --bg:        #0d0d0f;
+    --bg3:       #16161a;
+    --border:    rgba(137,180,250,0.1);
+    --text:      #cdd6f4;
+    --muted:     #45475a;
+    --subtle:    #6c7086;
+    --green:     #a6e3a1;
+    --red:       #f38ba8;
+    --teal:      #94e2d5;
+    --mauve:     #cba6f7;
+    --font:      'JetBrains Mono', monospace;
+  }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-body);
-            margin: 0;
-            padding: 60px 20px;
-            line-height: 1.6;
-        }
+  html { scroll-behavior: smooth; }
 
-        .container { max-width: 850px; margin: 0 auto; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-        .header-section { margin-bottom: 60px; text-align: left; }
-        
-        h1 { 
-            font-family: var(--font-header); 
-            font-size: 3rem; 
-            margin: 0; 
-            background: linear-gradient(to right, #fff, var(--accent));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+  /* cursor */
+  #cursor {
+    position: fixed; width: 6px; height: 6px;
+    background: var(--blue); border-radius: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width 0.15s, height 0.15s;
+  }
+  #cursor-ring {
+    position: fixed; width: 28px; height: 28px;
+    border: 1px solid rgba(137,180,250,0.4); border-radius: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+  }
 
-        /* Timeline Logic */
-        .timeline {
-            position: relative;
-            padding-left: 40px;
-        }
+  /* noise */
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+  /* grid */
+  body::after {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(137,180,250,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(137,180,250,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
 
-        .timeline-line {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 0%; /* Animated */
-            background: linear-gradient(to bottom, var(--accent), transparent);
-        }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
 
-        .version-node {
-            position: relative;
-            margin-bottom: 80px;
-            opacity: 0; /* Animated */
-        }
+  /* ── nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,13,15,0.85); backdrop-filter: blur(16px);
+  }
+  nav .container { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+  .nav-logo { font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: 0.05em; text-decoration: none; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--subtle); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; cursor: none; }
+  .nav-links a:hover { color: var(--blue); }
+  .nav-links a.active { color: var(--blue); }
 
-        .version-node::before {
-            content: '';
-            position: absolute;
-            left: -46px;
-            top: 10px;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--accent);
-        }
+  /* ── page header ── */
+  .page-header {
+    padding: 120px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-tag {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 16px; opacity: 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .page-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--blue); }
+  .page-title { font-size: clamp(32px, 6vw, 56px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; opacity: 0; margin-bottom: 12px; }
+  .page-sub { font-size: 11px; color: var(--subtle); opacity: 0; }
 
-        .v-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+  /* ── timeline ── */
+  .timeline {
+    padding: 60px 0 80px;
+    position: relative;
+  }
 
-        .v-number {
-            font-family: var(--font-header);
-            font-size: 1.8rem;
-            color: var(--text-main);
-        }
+  /* vertical line */
+  .timeline-track {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-track-fill {
+    position: absolute;
+    left: 0; top: 0;
+    width: 1px;
+    height: 0;
+    background: linear-gradient(to bottom, var(--blue), transparent);
+    transition: height 0.1s linear;
+  }
 
-        .v-badge {
-            font-size: 0.7rem;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+  /* version node */
+  .version-node {
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 56px;
+    opacity: 0;
+  }
+  .version-node:last-child { margin-bottom: 0; }
 
-        .badge-latest { background: var(--accent); color: white; }
-        .badge-beta { background: #30968c; color: white; }
-        .badge-alpha { background: #333; color: #a0a0a0; border: 1px solid #444; }
+  /* dot on the line */
+  .node-dot {
+    position: absolute;
+    left: -4px; top: 14px;
+    width: 9px; height: 9px;
+    background: var(--bg3);
+    border: 1px solid var(--blue);
+    border-radius: 0;
+    transition: background 0.2s;
+  }
+  .version-node.is-latest .node-dot { background: var(--blue); }
 
-        .change-card {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
+  /* version header */
+  .v-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+  }
+  .v-number {
+    font-size: 20px; font-weight: 800; color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .v-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 2px 8px;
+    border: 1px solid;
+  }
+  .badge-latest  { color: var(--blue);  border-color: var(--blue);  background: var(--blue-glow); }
+  .badge-beta    { color: var(--teal);  border-color: rgba(148,226,213,0.3); background: rgba(148,226,213,0.06); }
+  .badge-alpha   { color: var(--muted); border-color: var(--muted);  background: transparent; }
 
-        ul { list-style: none; padding: 0; margin: 0; }
-        
-        li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            display: flex;
-            align-items: flex-start;
-            font-weight: 400;
-            color: #d1d1d1;
-        }
+  /* erofs info block */
+  .erofs-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--blue);
+    padding: 10px 16px;
+    margin-bottom: 1px;
+    font-size: 10px; color: var(--subtle); line-height: 1.6;
+  }
+  .erofs-block strong { color: var(--blue); }
 
-        li span.tag {
-            font-weight: 800;
-            font-size: 0.7rem;
-            margin-right: 15px;
-            text-transform: uppercase;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
+  /* change card */
+  .change-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .version-node:hover .change-card { border-color: rgba(137,180,250,0.2); }
 
-        .tag-sys { color: #bb86fc; background: rgba(187, 134, 252, 0.1); }
-        .tag-rom { color: #109e90; background: rgba(17, 100, 92, 0.2); }
-        .tag-fix { color: #cf6679; background: rgba(207, 102, 121, 0.1); }
-        .tag-ai { color: #03dac6; background: rgba(3, 218, 198, 0.1); }
+  /* change items */
+  .change-item {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(137,180,250,0.04);
+    font-size: 11px; color: var(--subtle);
+    transition: background 0.15s, color 0.15s;
+  }
+  .change-item:last-child { border-bottom: none; }
+  .change-item:hover { background: rgba(137,180,250,0.03); color: var(--text); }
 
-        .erofs-info {
-            background: rgba(124, 77, 255, 0.05);
-            padding: 15px;
-            border-left: 3px solid var(--accent);
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            border-radius: 0 12px 12px 0;
-        }
-    </style>
+  /* tags */
+  .ctag {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 1px 6px;
+    flex-shrink: 0; border: 1px solid;
+  }
+  .ctag-sys  { color: var(--mauve); border-color: rgba(203,166,247,0.25); background: rgba(203,166,247,0.06); }
+  .ctag-rom  { color: var(--teal);  border-color: rgba(148,226,213,0.25); background: rgba(148,226,213,0.06); }
+  .ctag-fix  { color: var(--red);   border-color: rgba(243,139,168,0.25); background: rgba(243,139,168,0.06); }
+  .ctag-ai   { color: var(--blue);  border-color: rgba(137,180,250,0.25); background: rgba(137,180,250,0.06); }
+
+  /* ── footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+  }
+  footer .container { display: flex; align-items: center; justify-content: space-between; }
+  .footer-left { font-size: 11px; color: var(--muted); }
+  .footer-left span { color: var(--blue); }
+  .footer-right a { font-size: 10px; color: var(--subtle); text-decoration: none; transition: color 0.2s; cursor: none; }
+  .footer-right a:hover { color: var(--blue); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(137,180,250,0.3); }
+
+  @keyframes pulse-dot { 0%,100%{opacity:1}50%{opacity:0.3} }
+  .live-dot { display: inline-block; width: 5px; height: 5px; background: var(--blue); margin-right: 6px; animation: pulse-dot 2s ease-in-out infinite; vertical-align: middle; }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-section">
-            <h1>System Updates</h1>
-            <p style="color: var(--text-muted)">Tracking the changes of LumiROM</p>
-        </div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-        <div class="timeline">
-            <div class="timeline-line"></div>
+<!-- nav -->
+<nav>
+  <div class="container">
+    <a href="index.html" class="nav-logo">lumi<span style="color:var(--subtle)">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">features</a></li>
+      <li><a href="index.html#screenshots">screenshots</a></li>
+      <li><a href="index.html#download">download</a></li>
+      <li><a href="changelog.html" class="active">changelog</a></li>
+      <li><a href="https://LumiROMGroup.t.me/" target="_blank">telegram ↗</a></li>
+    </ul>
+  </div>
+</nav>
 
-            <div class="version-node">
-                <div class="v-header">
-                    <span class="v-number">v8.5.0</span>
-                    <span class="v-badge badge-beta">Beta Build</span>
-                </div>
-                <div class="change-card">
-                    <div class="erofs-info">
-                        <strong>EroFS Update:</strong> system is also converted to erofs (at least for beta)
-                    </div>
-                    <ul>
-                        <li><span class="tag tag-rom">ROM</span> Samsung A15 4G Port</li>
-                        <li><span class="tag tag-sys">New</span> Added new kernel to boot One Ui 8.5</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed WiFi</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed RIL</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed SSRM (partially)</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed (partially) camera</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed bluetooth</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed NFC</li>
+<!-- page header -->
+<div class="page-header">
+  <div class="container">
+    <div class="page-tag" id="page-tag">lumirom / system updates</div>
+    <div class="page-title" id="page-title">changelog</div>
+    <div class="page-sub" id="page-sub"><span class="live-dot"></span>tracking every change across all lumirom builds</div>
+  </div>
+</div>
 
-                    </ul>
-                </div>
-            </div>
-
-            <div class="version-node">
-                <div class="v-header">
-                    <span class="v-number">v8.3.1</span>
-                    <span class="v-badge badge-latest">Latest Build</span>
-                </div>
-                <div class="change-card">
-                    <div class="erofs-info">
-                        <strong>EroFS Conversion:</strong> Product, system_ext, odm, and vendor partitions converted. 
-                        Includes new EroFS kernel for A32 and A22.
-                    </div>
-                    <ul>
-                        <li><span class="tag tag-sys">Patch</span> December Security Patch</li>
-                        <li><span class="tag tag-sys">System</span> Removed "FRP" (Factory Reset Protection)</li>
-                        <li><span class="tag tag-ai">AI</span> Added AI Weather on Lock screen</li>
-                        <li><span class="tag tag-ai">AI</span> Added AI Wallpaper</li>
-                        <li><span class="tag tag-sys">UI</span> Added new specialized settings</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed clock selection on lockscreen</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed recent calls on phone app</li>
-                        <li><span class="tag tag-fix">Fix</span> Fixed Studio app crashes</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="version-node">
-                <div class="v-header">
-                    <span class="v-number">v8.2.5</span>
-                    <span class="v-badge badge-alpha">Alpha Build</span>
-                </div>
-                <div class="change-card">
-                    <ul>
-                        <li><span class="tag tag-sys">Biometrics</span> FOD (Fingerprint On Display) Initial Support</li>
-                        <li><span class="tag tag-ai">AI</span> Galaxy AI Features Integration</li>
-                        <li><span class="tag tag-sys">Core</span> NFC Support enabled</li>
-                        <li><span class="tag tag-sys">Core</span> Basic features (Wi-Fi, Bluetooth, etc.)</li>
-                        <li><span class="tag tag-sys">Status</span> Official Boot Success</li>
-                        <li><span class="tag tag-fix">Fix</span> Lag on security settings</li>
-                        <li><span class="tag tag-fix">Fix</span> System sound and SSRM warning removed</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
+<!-- timeline -->
+<div class="container">
+  <div class="timeline" id="timeline">
+    <div class="timeline-track">
+      <div class="timeline-track-fill" id="timeline-fill"></div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tl = anime.timeline({
-                easing: 'easeOutQuart'
-            });
+    <!-- v8.5.5 -->
+    <div class="version-node" id="node-0">
+      <div class="node-dot"></div>
+      <div class="v-header">
+        <span class="v-number">v8.5.5</span>
+        <span class="v-badge badge-beta">beta build</span>
+      </div>
+      <div class="erofs-block">
+        <strong>erofs update:</strong> system is also converted to erofs (at least for beta)
+      </div>
+      <div class="change-card">
+        <div class="change-item"><span class="ctag ctag-rom">rom</span> samsung a15 4g port</div>
+        <div class="change-item"><span class="ctag ctag-sys">new</span> added new kernel to boot one ui 8.5</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed wifi</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed ril</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed ssrm (partially)</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed (partially) camera</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed bluetooth</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed nfc</div>
+      </div>
+    </div>
 
-            tl
-            // 1. Animate the line growth
-            .add({
-                targets: '.timeline-line',
-                height: '100%',
-                duration: 1500
-            })
-            // 2. Pop the nodes in
-            .add({
-                targets: '.version-node',
-                opacity: [0, 1],
-                translateX: [20, 0],
-                delay: anime.stagger(300),
-                duration: 800
-            }, '-=1000')
-            // 3. Subtle float animation for the latest card
-            .add({
-                targets: '.badge-latest',
-                translateY: [0, -5, 0],
-                loop: true,
-                duration: 2000,
-                easing: 'easeInOutQuad'
-            });
-        });
-    </script>
+    <!-- v8.3.1 -->
+    <div class="version-node is-latest" id="node-1">
+      <div class="node-dot"></div>
+      <div class="v-header">
+        <span class="v-number">v8.3.1</span>
+        <span class="v-badge badge-latest">latest build</span>
+      </div>
+      <div class="erofs-block">
+        <strong>erofs conversion:</strong> product, system_ext, odm, and vendor partitions converted.
+        includes new erofs kernel for a32 and a22.
+      </div>
+      <div class="change-card">
+        <div class="change-item"><span class="ctag ctag-sys">patch</span> december security patch</div>
+        <div class="change-item"><span class="ctag ctag-sys">system</span> removed "frp" (factory reset protection)</div>
+        <div class="change-item"><span class="ctag ctag-ai">ai</span> added ai weather on lock screen</div>
+        <div class="change-item"><span class="ctag ctag-ai">ai</span> added ai wallpaper</div>
+        <div class="change-item"><span class="ctag ctag-sys">ui</span> added new specialized settings</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed clock selection on lockscreen</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed recent calls on phone app</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed studio app crashes</div>
+      </div>
+    </div>
+
+    <!-- v8.2.5 -->
+    <div class="version-node" id="node-2">
+      <div class="node-dot"></div>
+      <div class="v-header">
+        <span class="v-number">v8.2.5</span>
+        <span class="v-badge badge-alpha">alpha build</span>
+      </div>
+      <div class="change-card">
+        <div class="change-item"><span class="ctag ctag-sys">biometrics</span> fod (fingerprint on display) initial support</div>
+        <div class="change-item"><span class="ctag ctag-ai">ai</span> galaxy ai features integration</div>
+        <div class="change-item"><span class="ctag ctag-sys">core</span> nfc support enabled</div>
+        <div class="change-item"><span class="ctag ctag-sys">core</span> basic features (wi-fi, bluetooth, etc.)</div>
+        <div class="change-item"><span class="ctag ctag-sys">status</span> official boot success</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> lag on security settings</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> system sound and ssrm warning removed</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- footer -->
+<footer>
+  <div class="container">
+    <div class="footer-left">
+      <span>lumirom</span> by <span>luminous418</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://LumiROMGroup.t.me/" target="_blank">t.me/LumiROMGroup ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+(function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+document.querySelectorAll('a,.change-item,.version-node').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='44px'; ring.style.height='44px'; ring.style.borderColor='rgba(137,180,250,0.7)'; });
+  el.addEventListener('mouseleave',()=>{ cursor.style.width='6px';  cursor.style.height='6px';  ring.style.width='28px'; ring.style.height='28px'; ring.style.borderColor='rgba(137,180,250,0.4)'; });
+});
+
+// header entrance
+anime({ targets: '#page-tag',   opacity:[0,1], translateX:[-16,0], duration:600, delay:300, easing:'easeOutExpo' });
+anime({ targets: '#page-title', opacity:[0,1], translateY:[24,0],  duration:800, delay:450, easing:'easeOutExpo' });
+anime({ targets: '#page-sub',   opacity:[0,1], translateY:[10,0],  duration:600, delay:650, easing:'easeOutExpo' });
+
+// timeline line grow + nodes appear
+setTimeout(() => {
+  const fill = document.getElementById('timeline-fill');
+  const timeline = document.getElementById('timeline');
+  const totalH = timeline.scrollHeight;
+
+  anime({
+    targets: fill,
+    height: [0, totalH],
+    duration: 1800,
+    easing: 'easeInOutQuart'
+  });
+
+  anime({
+    targets: '.version-node',
+    opacity: [0, 1],
+    translateX: [-20, 0],
+    delay: anime.stagger(200, { start: 300 }),
+    duration: 600,
+    easing: 'easeOutExpo'
+  });
+}, 700);
+
+// scroll-reveal for nodes below the fold
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && parseFloat(getComputedStyle(e.target).opacity) < 0.5) {
+      anime({ targets: e.target, opacity:[0,1], translateX:[-16,0], duration:500, easing:'easeOutExpo' });
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.version-node').forEach(n => obs.observe(n));
+</script>
 </body>
 </html>
