@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>lumirom — one ui 8 for galaxy a-series</title>
-<meta name="description" content="lumirom — experience the fluidity and smoothness of one ui 8 on samsung galaxy a32/a22.">
+<title>LumiROM — One UI 8 for Galaxy A-Series</title>
+<meta name="description" content="LumiROM — Experience the fluidity and smoothness of One UI 8 on Samsung Galaxy A32/A22.">
 <meta name="author" content="luminous418">
 <meta name="theme-color" content="#89b4fa">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,31 +37,36 @@
     line-height: 1.7;
     min-height: 100vh;
     overflow-x: hidden;
-    cursor: none;
   }
 
-  /* cursor */
-  #cursor {
-    position: fixed; width: 6px; height: 6px;
-    background: var(--blue); border-radius: 0;
-    pointer-events: none; z-index: 9999;
-    transform: translate(-50%,-50%);
-    transition: width 0.15s, height 0.15s;
-  }
-  #cursor-ring {
-    position: fixed; width: 28px; height: 28px;
-    border: 1px solid rgba(137,180,250,0.4); border-radius: 0;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%,-50%);
+  /* desktop only cursor */
+  @media (pointer: fine) {
+    body { cursor: none; }
+    #cursor {
+      position: fixed; width: 6px; height: 6px;
+      background: var(--blue); border-radius: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width 0.15s, height 0.15s;
+    }
+    #cursor-ring {
+      position: fixed; width: 28px; height: 28px;
+      border: 1px solid rgba(137,180,250,0.4); border-radius: 0;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+    }
   }
 
-  /* noise */
+  /* Hide cursor elements on mobile by default */
+  #cursor, #cursor-ring { display: none; }
+  @media (pointer: fine) { #cursor, #cursor-ring { display: block; } }
+
+  /* noise & grid */
   body::before {
     content: ''; position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none; z-index: 1000; opacity: 0.4;
   }
-  /* grid */
   body::after {
     content: ''; position: fixed; inset: 0;
     background-image:
@@ -73,7 +78,7 @@
 
   .container { max-width: 860px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
 
-  /* ── nav ── */
+  /* nav */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     border-bottom: 1px solid var(--border);
@@ -85,160 +90,79 @@
   .nav-links a { color: var(--subtle); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
   .nav-links a:hover { color: var(--blue); }
 
-  /* ── hero ── */
+  /* hero */
   #hero { padding: 160px 0 100px; min-height: 100vh; display: flex; align-items: center; }
   .hero-inner { width: 100%; }
-
-  .hero-tag {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--blue); margin-bottom: 20px; opacity: 0;
-    display: flex; align-items: center; gap: 10px;
-  }
+  .hero-tag { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; opacity: 0; display: flex; align-items: center; gap: 10px; }
   .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--blue); }
-
-  h1 {
-    font-size: clamp(48px, 8vw, 80px); font-weight: 800;
-    line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px; opacity: 0;
-  }
+  h1 { font-size: clamp(48px, 8vw, 80px); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px; opacity: 0; }
   .hero-accent { color: var(--blue); }
-
-  .hero-desc {
-    font-size: 13px; color: var(--subtle); max-width: 460px;
-    line-height: 1.8; margin-bottom: 40px; opacity: 0;
-  }
-
+  .hero-desc { font-size: 13px; color: var(--subtle); max-width: 460px; line-height: 1.8; margin-bottom: 40px; opacity: 0; }
   .hero-actions { display: flex; gap: 14px; align-items: center; opacity: 0; flex-wrap: wrap; }
 
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
     background: var(--blue); color: #0d0d0f; text-decoration: none;
     font-family: var(--font); font-size: 11px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase; cursor: none;
-    transition: background 0.2s, transform 0.2s;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s, transform 0.2s;
   }
-  .btn-primary:hover { background: #a8c8ff; transform: translateY(-1px); }
-
   .btn-ghost {
     display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
     background: transparent; color: var(--subtle); text-decoration: none;
     font-family: var(--font); font-size: 11px; letter-spacing: 0.08em;
-    text-transform: uppercase; border: 1px solid var(--border); cursor: none;
-    transition: color 0.2s, border-color 0.2s;
+    text-transform: uppercase; border: 1px solid var(--border); transition: color 0.2s, border-color 0.2s;
   }
-  .btn-ghost:hover { color: var(--blue); border-color: var(--blue); }
 
-  /* device badge */
-  .device-badge {
-    margin-top: 40px; opacity: 0;
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1px; background: var(--border);
-    border: 1px solid var(--border); max-width: 620px;
-  }
-  .badge-item {
-    background: var(--bg); padding: 16px 20px;
-    transition: background 0.2s;
-  }
+  .device-badge { margin-top: 40px; opacity: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 620px; }
+  .badge-item { background: var(--bg); padding: 16px 20px; transition: background 0.2s; }
   .badge-item:hover { background: var(--bg3); }
   .badge-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
   .badge-val { font-size: 11px; color: var(--text); font-weight: 600; line-height: 1.6; }
   .badge-val .hi { color: var(--blue); }
 
-  /* ── sections ── */
+  /* sections */
   section { padding: 80px 0; border-top: 1px solid var(--border); }
-
   .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; }
   .section-num { font-size: 10px; color: var(--blue); letter-spacing: 0.15em; opacity: 0.6; }
   .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); }
   .section-line { flex: 1; height: 1px; background: var(--border); }
 
-  /* ── features ── */
-  .features-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1px; background: var(--border); border: 1px solid var(--border);
-  }
-  @media (max-width: 600px) {
-    .features-grid { grid-template-columns: 1fr; }
-    .device-badge { grid-template-columns: 1fr; }
-    .specs-row { flex-direction: column; gap: 1px; }
-  }
-
-  .feature-card {
-    background: var(--bg); padding: 24px;
-    opacity: 0; transition: background 0.2s;
-  }
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .feature-card { background: var(--bg); padding: 24px; opacity: 0; transition: background 0.2s; }
   .feature-card:hover { background: var(--bg3); }
-  .feature-card:hover .fc-name { color: var(--blue); }
-
   .fc-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .fc-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 8px; transition: color 0.2s; }
+  .fc-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
   .fc-desc { font-size: 10px; color: var(--subtle); line-height: 1.7; }
 
-  /* ── specs ── */
-  .specs-row {
-    display: flex; gap: 1px; background: var(--border);
-    border: 1px solid var(--border);
-  }
-  .spec-item {
-    flex: 1; background: var(--bg); padding: 24px 20px;
-    text-align: center; opacity: 0; transition: background 0.2s;
-  }
-  .spec-item:hover { background: var(--bg3); }
+  .specs-row { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .spec-item { flex: 1; background: var(--bg); padding: 24px 20px; text-align: center; opacity: 0; transition: background 0.2s; }
   .spec-val { font-size: 28px; font-weight: 800; color: var(--blue); letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; }
   .spec-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
-  /* ── screenshots ── */
-  .screenshots-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1px; background: var(--border); border: 1px solid var(--border);
-  }
-  @media (max-width: 600px) { .screenshots-grid { grid-template-columns: 1fr; } }
-
-  .screenshot-frame {
-    position: relative; overflow: hidden; line-height: 0;
-    transition: background 0.2s;
-  }
+  .screenshots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .screenshot-frame { position: relative; overflow: hidden; line-height: 0; }
   .screenshot-frame img { width: 100%; height: auto; display: block; filter: saturate(0.88) brightness(0.92); transition: filter 0.4s, transform 0.5s; }
   .screenshot-frame:hover img { filter: saturate(1.0) brightness(1.0); transform: scale(1.03); }
-  .screenshot-scanlines {
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
-    pointer-events: none; z-index: 1; opacity: 0.5;
-  }
 
-  /* ── download section ── */
-  .download-block {
-    background: var(--bg3); border: 1px solid var(--border);
-    border-left: 2px solid var(--blue);
-    padding: 24px 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 20px; opacity: 0;
-  }
-  .download-block-left { display: flex; flex-direction: column; gap: 4px; }
-  .download-block-title { font-size: 12px; font-weight: 700; color: var(--text); }
+  .download-block { background: var(--bg3); border: 1px solid var(--border); border-left: 2px solid var(--blue); padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; opacity: 0; }
+  .download-block-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
   .download-block-sub { font-size: 10px; color: var(--subtle); }
-  .download-block-sub strong { color: var(--text); }
-
-  /* ── warning ── */
-  .warn-block {
-    margin-top: 16px; background: var(--bg3);
-    border: 1px solid var(--border); border-left: 2px solid #f38ba8;
-    padding: 12px 18px; opacity: 0;
-  }
-  .warn-block p { font-size: 10px; color: var(--subtle); line-height: 1.7; }
+  .warn-block { margin-top: 16px; background: var(--bg3); border: 1px solid var(--border); border-left: 2px solid #f38ba8; padding: 12px 18px; opacity: 0; font-size: 10px; color: var(--subtle); }
   .warn-block strong { color: #f38ba8; }
 
-  /* ── footer ── */
   footer { border-top: 1px solid var(--border); padding: 32px 0; }
   footer .container { display: flex; align-items: center; justify-content: space-between; }
   .footer-left { font-size: 11px; color: var(--muted); }
   .footer-left span { color: var(--blue); }
-  .footer-right { font-size: 10px; color: var(--muted); }
 
-  /* misc */
-  ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--blue-dim); }
-  .glow-dot { display: inline-block; width: 6px; height: 6px; background: var(--blue); border-radius: 0; margin-right: 6px; animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)} }
-  .tag { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); background: var(--blue-glow); border: 1px solid rgba(137,180,250,0.15); padding: 2px 7px; }
+  @media (max-width: 600px) {
+    .features-grid, .device-badge, .specs-row, .screenshots-grid { grid-template-columns: 1fr; flex-direction: column; }
+    #hero { padding-top: 120px; }
+  }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-dim); }
 </style>
 </head>
 <body>
@@ -246,249 +170,169 @@
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- nav -->
 <nav id="navbar">
   <div class="container">
-    <a href="#" class="nav-logo" id="nav-logo">lumi<span style="color:var(--subtle)">.</span></a>
+    <a href="#" class="nav-logo" id="nav-logo">Lumi<span style="color:var(--subtle)">.</span></a>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#features">features</a></li>
-      <li><a href="#screenshots">screenshots</a></li>
-      <li><a href="#download">download</a></li>
-      <li><a href="https://LumiROMGroup.t.me/" target="_blank">telegram ↗</a></li>
-      <li><a href="https://Luminous418.t.me/" target="_blank">contact ↗</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#screenshots">Screenshots</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="https://LumiROMGroup.t.me/" target="_blank">Telegram ↗</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- hero -->
 <section id="hero">
   <div class="container">
     <div class="hero-inner">
-      <div class="hero-tag" id="hero-tag">custom rom / samsung galaxy a-series</div>
+      <div class="hero-tag" id="hero-tag">Custom ROM / Samsung Galaxy A-Series</div>
       <h1 id="hero-title">
-        <span class="hero-accent">lumirom</span><br>
-        <span style="color:var(--subtle);font-size:0.5em;font-weight:300;letter-spacing:0.01em">one ui 8.5 · android 16 · beta v8.5.5</span>
+        <span class="hero-accent">LumiROM</span><br>
+        <span style="color:var(--subtle);font-size:0.5em;font-weight:300;letter-spacing:0.01em">One UI 8.5 · Android 16</span>
       </h1>
       <p class="hero-desc" id="hero-desc">
-        experience the fluidity and smoothness of one ui 8 on your galaxy a-series device.
-        debloated, optimized, with full galaxy ai support.
+        Experience the fluidity and smoothness of One UI 8 on your Galaxy A-Series device. 
+        Debloated, optimized, and enhanced with Galaxy AI support.
       </p>
       <div class="hero-actions" id="hero-actions">
-        <a href="https://LumiROMGroup.t.me/" target="_blank" class="btn-primary">↓ download rom</a>
-        <a href="https://lumirom.vercel.app/changelog" target="_blank" class="btn-ghost">changelog</a>
+        <a href="https://LumiROMGroup.t.me/" target="_blank" class="btn-primary">Download ROM</a>
+        <a href="#" class="btn-ghost">Changelog</a>
       </div>
 
       <div class="device-badge" id="device-badge">
         <div class="badge-item">
-          <div class="badge-label">supported devices</div>
-          <div class="badge-val">
-            galaxy <span class="hi">a32</span> 4g<br>
-            galaxy <span class="hi">a22</span> 4g<br>
-            galaxy <span class="hi">a22</span> 5g
-          </div>
+          <div class="badge-label">Supported Devices</div>
+          <div class="badge-val">Galaxy <span class="hi">A32</span> / <span class="hi">A22</span></div>
         </div>
         <div class="badge-item">
-          <div class="badge-label">base</div>
-          <div class="badge-val">
-            one ui <span class="hi">8.5</span><br>
-            beta build
-          </div>
+          <div class="badge-label">Base OS</div>
+          <div class="badge-val">One UI <span class="hi">8.5</span></div>
         </div>
         <div class="badge-item">
-          <div class="badge-label">android</div>
-          <div class="badge-val">
-            android <span class="hi">16</span><br>
-          </div>
+          <div class="badge-label">Android Version</div>
+          <div class="badge-val">Android <span class="hi">16</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- features -->
 <section id="features">
   <div class="container">
     <div class="section-header">
       <span class="section-num">01</span>
-      <span class="section-title">features</span>
+      <span class="section-title">Features</span>
       <div class="section-line"></div>
     </div>
     <div class="features-grid">
       <div class="feature-card">
-        <div class="fc-label">performance</div>
-        <div class="fc-name">performance unlocked</div>
-        <div class="fc-desc">heavily debloated system. removed bloatware to free up ram and increase performance. significant speed improvements over stock.</div>
+        <div class="fc-label">Performance</div>
+        <div class="fc-name">Unlocked Speed</div>
+        <div class="fc-desc">Heavily debloated system. Removed bloatware to free up RAM and reduce background processes.</div>
       </div>
       <div class="feature-card">
-        <div class="fc-label">visuals</div>
-        <div class="fc-name">one ui 8 visuals</div>
-        <div class="fc-desc">enjoy the new "now bar", redesigned quick panel, and android 16 predictive back animations. full one ui 8.5 experience.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-label">animations</div>
-        <div class="fc-name">flagship animations</div>
-        <div class="fc-desc">full flagship animation set ported from higher-end samsung devices, with a lot of improvements and refinements.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-label">ai</div>
-        <div class="fc-name">galaxy ai</div>
-        <div class="fc-desc">full galaxy ai suite with working gallery ai support. features previously exclusive to flagship devices, now on your a-series.</div>
-      </div>
-    </div>
-
-    <!-- specs -->
-    <div style="margin-top:1px">
-      <div class="specs-row" id="specs-row">
-        <div class="spec-item">
-          <div class="spec-val">~3.4<span style="font-size:16px;font-weight:400">gb</span></div>
-          <div class="spec-lbl">rom size</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-val">v8.5.5</div>
-          <div class="spec-lbl">beta build</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-val">16</div>
-          <div class="spec-lbl">android version</div>
-        </div>
-        <div class="spec-item">
-          <div class="spec-val">8.5</div>
-          <div class="spec-lbl">one ui version</div>
-        </div>
+        <div class="fc-label">Visuals</div>
+        <div class="fc-name">One UI 8 Experience</div>
+        <div class="fc-desc">The new Now Bar, redesigned Quick Panel, and Android 16 predictive animations.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- screenshots -->
 <section id="screenshots">
   <div class="container">
     <div class="section-header">
       <span class="section-num">02</span>
-      <span class="section-title">screenshots</span>
+      <span class="section-title">Screenshots</span>
       <div class="section-line"></div>
     </div>
     <div class="screenshots-grid" id="screenshots-grid">
       <div class="screenshot-frame">
-        <img src="https://git.meowlabs.online/ncatt/mystuff/media/branch/main/lumirom_ss/photo_2026-03-09_20-40-31.jpg" alt="lumirom screenshot 1" onerror="this.src='https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-31.jpg'"/>
-        <div class="screenshot-scanlines"></div>
+        <img src="https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-31.jpg" alt="LumiROM UI" loading="lazy"/>
       </div>
       <div class="screenshot-frame">
-        <img src="https://git.meowlabs.online/ncatt/mystuff/media/branch/main/lumirom_ss/photo_2026-03-09_20-40-32.jpg" alt="lumirom screenshot 2" onerror="this.src='https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-32.jpg'"/>
-        <div class="screenshot-scanlines"></div>
+        <img src="https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-32.jpg" alt="LumiROM Settings" loading="lazy"/>
       </div>
       <div class="screenshot-frame">
-        <img src="https://git.meowlabs.online/ncatt/mystuff/media/branch/main/lumirom_ss/photo_2026-03-09_20-40-34.jpg" alt="lumirom screenshot 3" onerror="this.src='https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-34.jpg'"/>
-        <div class="screenshot-scanlines"></div>
+        <img src="https://git.meowlabs.online/ncatt/mystuff/raw/branch/main/lumirom_ss/photo_2026-03-09_20-40-34.jpg" alt="LumiROM AI" loading="lazy"/>
       </div>
     </div>
   </div>
 </section>
 
-<!-- download -->
 <section id="download">
   <div class="container">
     <div class="section-header">
       <span class="section-num">03</span>
-      <span class="section-title">download</span>
+      <span class="section-title">Download</span>
       <div class="section-line"></div>
     </div>
-
     <div class="download-block" id="download-block">
-      <div class="download-block-left">
-        <div class="download-block-title">lumirom beta v8.5.5 — one ui 8.5</div>
-        <div class="download-block-sub">
-          requires <strong>unlocked bootloader</strong> + <strong>twrp</strong> installed.
-          join the telegram group for flashing guides.
-        </div>
+      <div>
+        <div class="download-block-title">LumiROM One UI 8.5 Build</div>
+        <div class="download-block-sub">Requires unlocked bootloader and TWRP.</div>
       </div>
-      <a href="https://LumiROMGroup.t.me/" target="_blank" class="btn-primary">get lumirom ↗</a>
+      <a href="https://LumiROMGroup.t.me/" target="_blank" class="btn-primary">Join Telegram</a>
     </div>
-
     <div class="warn-block" id="warn-block">
-      <p><strong>flash at your own risk.</strong> always back up your data before flashing. the developer team is not responsible for any damage caused to your device.</p>
+      <strong>Flash at your own risk.</strong> We are not responsible for bricked devices or data loss.
     </div>
   </div>
 </section>
 
-<!-- footer -->
 <footer>
   <div class="container">
-    <div class="footer-left">
-      <span class="glow-dot"></span>
-      <span>lumirom</span> by <span>luminous418</span>
-    </div>
-    <div class="footer-right">
-      <a href="https://LumiROMGroup.t.me/" target="_blank" style="color:var(--subtle);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--subtle)'">
-        t.me/LumiROMGroup ↗
-      </a>
-    </div>
+    <div class="footer-left">LumiROM by <span>Luminous418</span></div>
+    <div class="footer-right">© 2026</div>
   </div>
 </footer>
 
 <script>
-// cursor
+// Improved cursor logic (Check for mouse)
 const cursor = document.getElementById('cursor');
 const cursorRing = document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
-function animateRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; cursorRing.style.left=rx+'px'; cursorRing.style.top=ry+'px'; requestAnimationFrame(animateRing); }
-animateRing();
-document.querySelectorAll('a, .feature-card, .badge-item, .spec-item, .screenshot-frame').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.width='12px'; cursor.style.height='12px'; cursorRing.style.width='44px'; cursorRing.style.height='44px'; cursorRing.style.borderColor='rgba(137,180,250,0.7)'; });
-  el.addEventListener('mouseleave', () => { cursor.style.width='6px'; cursor.style.height='6px'; cursorRing.style.width='28px'; cursorRing.style.height='28px'; cursorRing.style.borderColor='rgba(137,180,250,0.4)'; });
-});
 
-// nav
+if (window.matchMedia("(pointer: fine)").matches) {
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', e => { 
+    mx=e.clientX; my=e.clientY; 
+    cursor.style.left=mx+'px'; cursor.style.top=my+'px'; 
+  });
+  function animateRing(){ 
+    rx+=(mx-rx)*0.15; ry+=(my-ry)*0.15; 
+    cursorRing.style.left=rx+'px'; cursorRing.style.top=ry+'px'; 
+    requestAnimationFrame(animateRing); 
+  }
+  animateRing();
+
+  document.querySelectorAll('a, .feature-card, .badge-item, .screenshot-frame').forEach(el => {
+    el.addEventListener('mouseenter', () => { 
+      cursor.style.transform='translate(-50%,-50%) scale(2)'; 
+      cursorRing.style.width='40px'; cursorRing.style.height='40px';
+    });
+    el.addEventListener('mouseleave', () => { 
+      cursor.style.transform='translate(-50%,-50%) scale(1)';
+      cursorRing.style.width='28px'; cursorRing.style.height='28px';
+    });
+  });
+}
+
+// Animations
 anime({ targets: '#nav-logo', opacity:[0,1], translateY:[-8,0], duration:600, delay:200, easing:'easeOutExpo' });
-anime({ targets: '#nav-links li', opacity:[0,1], translateY:[-6,0], duration:500, delay:anime.stagger(60,{start:300}), easing:'easeOutExpo' });
+anime({ targets: '#hero-title', opacity:[0,1], translateY:[30,0], duration:900, delay:400, easing:'easeOutExpo' });
+anime({ targets: '#hero-desc', opacity:[0,1], translateY:[16,0], duration:700, delay:600, easing:'easeOutExpo' });
+anime({ targets: '#hero-actions', opacity:[0,1], translateY:[12,0], duration:700, delay:750, easing:'easeOutExpo' });
 
-// hero
-anime({ targets: '#hero-tag',     opacity:[0,1], translateX:[-16,0], duration:700, delay:400,  easing:'easeOutExpo' });
-anime({ targets: '#hero-title',   opacity:[0,1], translateY:[30,0],  duration:900, delay:500,  easing:'easeOutExpo' });
-anime({ targets: '#hero-desc',    opacity:[0,1], translateY:[16,0],  duration:700, delay:700,  easing:'easeOutExpo' });
-anime({ targets: '#hero-actions', opacity:[0,1], translateY:[12,0],  duration:700, delay:850,  easing:'easeOutExpo' });
-anime({ targets: '#device-badge', opacity:[0,1], translateY:[20,0],  duration:800, delay:1050, easing:'easeOutExpo' });
-
-// glitch logo
-const logo = document.getElementById('nav-logo');
-logo.addEventListener('mouseenter', () => {
-  anime({ targets: logo, translateX:[{value:-2,duration:50},{value:2,duration:50},{value:-1,duration:50},{value:0,duration:50}], easing:'linear' });
-});
-
-// scroll reveals
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const el = entry.target;
-
-    if (el.classList.contains('feature-card'))
-      anime({ targets: el, opacity:[0,1], translateY:[20,0], duration:500, easing:'easeOutExpo' });
-
-    if (el.classList.contains('spec-item'))
-      anime({ targets: el, opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutExpo' });
-
-    if (el.id === 'screenshots-grid') {
-      el.querySelectorAll('.screenshot-frame').forEach((frame, i) => {
-        anime({ targets: frame, opacity:[0,1], translateY:[24,0], duration:600, delay: i*100, easing:'easeOutExpo' });
-      });
+    if (entry.isIntersecting) {
+      anime({ targets: entry.target, opacity:[0,1], translateY:[20,0], duration:600, easing:'easeOutExpo' });
+      observer.unobserve(entry.target);
     }
-
-    if (el.id === 'download-block')
-      anime({ targets: el, opacity:[0,1], translateX:[-16,0], duration:500, easing:'easeOutExpo' });
-
-    if (el.id === 'warn-block')
-      anime({ targets: el, opacity:[0,1], translateY:[8,0], duration:400, easing:'easeOutExpo' });
-
-    observer.unobserve(el);
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.feature-card, .spec-item, #screenshots-grid, #download-block, #warn-block')
-  .forEach(el => observer.observe(el));
-
-// set initial state for screenshot frames
-document.querySelectorAll('.screenshot-frame').forEach(f => f.style.opacity = '0');
+document.querySelectorAll('.feature-card, .spec-item, #download-block, .screenshot-frame').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
