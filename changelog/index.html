@@ -203,6 +203,43 @@
   .ctag-fix  { color: var(--red);   border-color: rgba(243,139,168,0.25); background: rgba(243,139,168,0.06); }
   .ctag-ai   { color: var(--blue);  border-color: rgba(137,180,250,0.25); background: rgba(137,180,250,0.06); }
 
+  .menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 10px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--blue);
+  transition: 0.3s;
+}
+
+/* Open state of button */
+.menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { transform: translateY(0) rotate(-45deg); }
+
+/* Overlay */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 13, 15, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.menu-overlay.active { opacity: 1; pointer-events: auto; }
+
   /* ── footer ── */
   footer {
     border-top: 1px solid var(--border);
@@ -221,6 +258,36 @@
 
   @keyframes pulse-dot { 0%,100%{opacity:1}50%{opacity:0.3} }
   .live-dot { display: inline-block; width: 5px; height: 5px; background: var(--blue); margin-right: 6px; animation: pulse-dot 2s ease-in-out infinite; vertical-align: middle; }
+
+  @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    z-index: 100;
+    transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-links.active { right: 0; }
+  
+  .nav-links a { font-size: 14px; }
+
+
+  .badge-val {
+    column-count: 1; 
+    width: 100%;
+  }
+}
 </style>
 </head>
 <body>
@@ -229,18 +296,22 @@
 <div id="cursor-ring"></div>
 
 <!-- nav -->
-<nav>
-  <div class="container">
-    <a href="index.html" class="nav-logo">Lumi<span style="color:var(--subtle)"></span></a>
-    <ul class="nav-links">
-      <li><a href="index.html#features">features</a></li>
-      <li><a href="index.html#screenshots">screenshots</a></li>
-      <li><a href="index.html#download">download</a></li>
-      <li><a href="changelog.html" class="active">changelog</a></li>
-      <li><a href="https://LumiROMGroup.t.me/" target="_blank">telegram ↗</a></li>
-    </ul>
-  </div>
-</nav>
+  <nav id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo" id="nav-logo">Lumi<span style="color:var(--subtle)"></span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+      <span></span>
+      <span></span>
+    </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="https://LumiROMGroup.t.me/" target="_blank" rel="noopener">Download ↗</a></li>
+        <li><a href="https://Luminous418.t.me/" target="_blank" rel="noopener">Contact ↗</a></li>
+        <li><a href="https://lumirom.vercel.app/" target="_blank" rel="noopener">Go back</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="menu-overlay" id="menu-overlay"></div>
 
 <!-- page header -->
 <div class="page-header">
@@ -418,6 +489,28 @@ const obs = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.version-node').forEach(n => obs.observe(n));
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const allLinks = document.querySelectorAll('.nav-links a');
+
+    function toggleMenu() {
+      menuToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+    }
+
+    menuToggle.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', toggleMenu);
+
+
+    allLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) toggleMenu();
+      });
+    });
 </script>
 </body>
 </html>
