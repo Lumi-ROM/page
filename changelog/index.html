@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>lumirom — changelog</title>
-<meta name="description" content="lumirom changelog — tracking the changes of lumirom.">
+<title>LumiROM — changelog</title>
+<meta name="description" content="LumiROM changelog — tracking the changes of LumiROM.">
 <meta name="theme-color" content="#89b4fa">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
@@ -43,14 +43,14 @@
 
   /* cursor */
   #cursor {
-    position: fixed; width: 6px; height: 6px;
+    position: Fixed; width: 6px; height: 6px;
     background: var(--blue); border-radius: 0;
     pointer-events: none; z-index: 9999;
     transform: translate(-50%,-50%);
     transition: width 0.15s, height 0.15s;
   }
   #cursor-ring {
-    position: fixed; width: 28px; height: 28px;
+    position: Fixed; width: 28px; height: 28px;
     border: 1px solid rgba(137,180,250,0.4); border-radius: 0;
     pointer-events: none; z-index: 9998;
     transform: translate(-50%,-50%);
@@ -58,13 +58,13 @@
 
   /* noise */
   body::before {
-    content: ''; position: fixed; inset: 0;
+    content: ''; position: Fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none; z-index: 1000; opacity: 0.4;
   }
   /* grid */
   body::after {
-    content: ''; position: fixed; inset: 0;
+    content: ''; position: Fixed; inset: 0;
     background-image:
       linear-gradient(rgba(137,180,250,0.025) 1px, transparent 1px),
       linear-gradient(90deg, rgba(137,180,250,0.025) 1px, transparent 1px);
@@ -76,7 +76,7 @@
 
   /* ── nav ── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: Fixed; top: 0; left: 0; right: 0; z-index: 100;
     border-bottom: 1px solid var(--border);
     background: rgba(13,13,15,0.85); backdrop-filter: blur(16px);
   }
@@ -231,7 +231,7 @@
 <!-- nav -->
 <nav>
   <div class="container">
-    <a href="index.html" class="nav-logo">lumi<span style="color:var(--subtle)">.</span></a>
+    <a href="index.html" class="nav-logo">Lumi<span style="color:var(--subtle)"></span></a>
     <ul class="nav-links">
       <li><a href="index.html#features">features</a></li>
       <li><a href="index.html#screenshots">screenshots</a></li>
@@ -245,9 +245,9 @@
 <!-- page header -->
 <div class="page-header">
   <div class="container">
-    <div class="page-tag" id="page-tag">lumirom / system updates</div>
+    <div class="page-tag" id="page-tag">LumiROM / system updates</div>
     <div class="page-title" id="page-title">changelog</div>
-    <div class="page-sub" id="page-sub"><span class="live-dot"></span>tracking every change across all lumirom builds</div>
+    <div class="page-sub" id="page-sub"><span class="live-dot"></span>tracking every change across all LumiROM builds</div>
   </div>
 </div>
 
@@ -258,34 +258,66 @@
       <div class="timeline-track-fill" id="timeline-fill"></div>
     </div>
 
-    <!-- v8.5.0 -->
+    <!-- v8.6.0 -->
     <div class="version-node" id="node-0">
+      <div class="node-dot"></div>
+      <div class="v-header">
+        <span class="v-number">v8.6.0</span>
+        <span class="v-badge badge-latest">Stable build</span>
+      </div>
+      <div class="change-card">
+        <div class="change-item"><span class="ctag ctag-rom">rom</span> Samsung A34 port for A32</div>
+        <div class="change-item"><span class="ctag ctag-rom">rom</span> Samsung A15 port for A22</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed Hotspot</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed BT on A15 base</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed issues related to gallery</div>
+        <div class="change-item"><span class="ctag ctag-ai">ai</span> Added Gallery AI</div>
+      </div>
+    </div>      
+    
+    <!-- v8.5.5 -->
+    <div class="version-node" id="node-1">
+      <div class="node-dot"></div>
+      <div class="v-header">
+        <span class="v-number">v8.5.5</span>
+        <span class="v-badge badge-latest">Stable build</span>
+      </div>
+      <div class="change-card">
+        <div class="change-item"><span class="ctag ctag-rom">rom</span> Samsung A34 port</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed ssrm</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed Secure Folder</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed Knox related services</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed portrait mode</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed overlay</div>
+        <div class="change-item"><span class="ctag ctag-sys">new</span> Added new kernel to A32 and A22</div>
+      </div>
+    </div>    
+    
+    <!-- v8.5.0 -->
+    <div class="version-node" id="node-2">
       <div class="node-dot"></div>
       <div class="v-header">
         <span class="v-number">v8.5.0</span>
         <span class="v-badge badge-beta">beta build</span>
       </div>
-      <div class="erofs-block">
-        <strong>erofs update:</strong> system is also converted to erofs (at least for beta)
-      </div>
       <div class="change-card">
-        <div class="change-item"><span class="ctag ctag-rom">rom</span> samsung a15 4g port</div>
-        <div class="change-item"><span class="ctag ctag-sys">new</span> added new kernel to boot one ui 8.5</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed wifi</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed ril</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed ssrm (partially)</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed (partially) camera</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed bluetooth</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed nfc</div>
+        <div class="change-item"><span class="ctag ctag-rom">rom</span> Samsung a15 4g port</div>
+        <div class="change-item"><span class="ctag ctag-sys">new</span> Added new kernel to boot one ui 8.5</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed wifi</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed ril</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed ssrm (partially)</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed (partially) camera</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed bluetooth</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed nfc</div>
       </div>
     </div>
 
     <!-- v8.3.1 -->
-    <div class="version-node is-latest" id="node-1">
+    <div class="version-node is-latest" id="node-3">
       <div class="node-dot"></div>
       <div class="v-header">
         <span class="v-number">v8.3.1</span>
-        <span class="v-badge badge-latest">latest build</span>
+        <span class="v-badge badge-latest">Stable build</span>
       </div>
       <div class="erofs-block">
         <strong>erofs conversion:</strong> product, system_ext, odm, and vendor partitions converted.
@@ -297,14 +329,14 @@
         <div class="change-item"><span class="ctag ctag-ai">ai</span> added ai weather on lock screen</div>
         <div class="change-item"><span class="ctag ctag-ai">ai</span> added ai wallpaper</div>
         <div class="change-item"><span class="ctag ctag-sys">ui</span> added new specialized settings</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed clock selection on lockscreen</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed recent calls on phone app</div>
-        <div class="change-item"><span class="ctag ctag-fix">fix</span> fixed studio app crashes</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed clock selection on lockscreen</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed recent calls on phone app</div>
+        <div class="change-item"><span class="ctag ctag-fix">fix</span> Fixed studio app crashes</div>
       </div>
     </div>
 
     <!-- v8.2.5 -->
-    <div class="version-node" id="node-2">
+    <div class="version-node" id="node-4">
       <div class="node-dot"></div>
       <div class="v-header">
         <span class="v-number">v8.2.5</span>
@@ -328,7 +360,7 @@
 <footer>
   <div class="container">
     <div class="footer-left">
-      <span>lumirom</span> by <span>luminous418</span>
+      <span>LumiROM</span> by <span>luminous418</span>
     </div>
     <div class="footer-right">
       <a href="https://LumiROMGroup.t.me/" target="_blank">t.me/LumiROMGroup ↗</a>

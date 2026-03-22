@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>lumirom — One UI 8.5 for Galaxy A-Series</title>
+  <title>LumiROM - One UI 8.5 for Galaxy A-Series</title>
   <meta name="description" content="Experience the smoothness and modern features of One UI 8.5 (Android 16) on your Samsung Galaxy A32 / A22 devices — debloated, optimized, with full Galaxy AI support.">
   <meta name="author" content="luminous418">
   <meta name="theme-color" content="#89b4fa">
@@ -144,7 +144,7 @@
       font-size: 10px; color: var(--subtle); line-height: 1.5;
     }
     .badge-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-    .badge-val { font-size: 11px; color: var(--text); font-weight: 600; line-height: 1.6; }
+    .badge-val { font-size: 11px; color: var(--text); font-weight: 600; line-height: 1.6; column-count: 2; column-gap: 20px; width: fit-content; }
     .badge-val .hi { color: var(--blue); }
 
     /* GitHub icon link */
@@ -273,7 +273,7 @@
   <!-- Nav -->
   <nav id="navbar">
     <div class="container">
-      <a href="#" class="nav-logo" id="nav-logo">lumi<span style="color:var(--subtle)">.</span></a>
+      <a href="#" class="nav-logo" id="nav-logo">Lumi<span style="color:var(--subtle)"></span></a>
       <ul class="nav-links" id="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#maintainers">Maintainers</a></li>
@@ -291,8 +291,8 @@
       <div class="hero-inner">
         <div class="hero-tag" id="hero-tag">Custom ROM • Samsung Galaxy A-Series</div>
         <h1 id="hero-title">
-          <span class="hero-accent">lumirom</span><br>
-          <span style="color:var(--subtle);font-size:0.48em;font-weight:300;letter-spacing:0.01em">One UI 8.5 • Android 16 • Beta v8.5.5</span>
+          <span class="hero-accent">LumiROM</span><br>
+          <span style="color:var(--subtle);font-size:0.48em;font-weight:300;letter-spacing:0.01em">One UI 8.5 • Android 16 • Stable v8.6.0</span>
         </h1>
         <p class="hero-desc" id="hero-desc">
           Experience the fluidity and modern features of One UI 8.5 on your Galaxy A-series device.<br>
@@ -308,14 +308,17 @@
             <div class="badge-val">
               Galaxy <span class="hi">A32</span> 4G<br>
               Galaxy <span class="hi">A22</span> 4G<br>
-              Galaxy <span class="hi">A22</span> 5G
+              Galaxy <span class="hi">A22</span> 5G<br>
+              Galaxy <span class="hi">M32</span> 4G<br>
+              Galaxy <span class="hi">M22</span> 4G<br>
+              Galaxy <span class="hi">F22</span> 4G
             </div>
           </div>
           <div class="badge-item">
             <div class="badge-label">Base</div>
             <div class="badge-val">
               One UI <span class="hi">8.5</span><br>
-              Beta build
+              Stable build
             </div>
           </div>
           <div class="badge-item">
@@ -363,12 +366,8 @@
       <div style="margin-top:1px">
         <div class="specs-row" id="specs-row">
           <div class="spec-item">
-            <div class="spec-val">~3.4<span style="font-size:16px;font-weight:400"> GB</span></div>
-            <div class="spec-lbl">ROM Size</div>
-          </div>
-          <div class="spec-item">
-            <div class="spec-val">v8.5.5</div>
-            <div class="spec-lbl">Beta Build</div>
+            <div class="spec-val">v8.6.0</div>
+            <div class="spec-lbl">Stable Build</div>
           </div>
           <div class="spec-item">
             <div class="spec-val">16</div>
@@ -435,6 +434,16 @@
             </svg>
           </a>
         </div>
+        <div class="team-item">
+          <div class="team-name">Elytra</div>
+          <div class="team-role">Maintainer & Developer</div>
+          <div class="team-desc">Maintainer for A225x (Galaxy A22 4G), contributes to LumiROM development and is also a kernel developer for A225X.</div>
+          <a href="https://github.com/vivacumtechh" target="_blank" rel="noopener" class="github-icon-link" aria-label="Elytra's GitHub profile">
+            <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -492,7 +501,7 @@
       </div>
       <div class="download-block" id="download-block">
         <div class="download-block-left">
-          <div class="download-block-title">LumiROM Beta v8.5.5 — One UI 8.5</div>
+          <div class="download-block-title">LumiROM Stable v8.6.0 — One UI 8.5</div>
           <div class="download-block-sub">
             Requires an <strong>unlocked bootloader</strong> and <strong>TWRP</strong> custom recovery installed.<br>
             Join the Telegram group for flashing guides and support.
@@ -511,7 +520,7 @@
     <div class="container">
       <div class="footer-left">
         <span class="glow-dot"></span>
-        <span>lumirom</span> by <span>luminous418</span>
+        <span>LumiROM</span> by <span>luminous418</span>
       </div>
       <div class="footer-right">
         <a href="https://LumiROMGroup.t.me/" target="_blank" rel="noopener" style="color:var(--subtle);text-decoration:none;transition:color 0.2s" 
